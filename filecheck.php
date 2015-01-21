@@ -126,11 +126,6 @@ class FileCheck
 				//$this->lastReport = file($this->lastReportFile);
 				$t = file_get_contents($this->lastReportFile);
 				$this->lastReport = unserialize($t);
-				/**
-				foreach ( $this->lastReport as $c=>$v){
-					$this->lastReport[$c] = unserialize ($v);
-				}
-				/**/
 			}
 		}
 	}
@@ -184,7 +179,6 @@ class FileCheck
 	private function runWithRecursiveDirectoryIterator()
 	{
 		$cont = 0;
-		//print_r($this->lastReport);
 		if(!empty($this->folder)) {
 			// http://php.net/manual/es/class.recursivedirectoryiterator.php
 			$Directory = new \RecursiveDirectoryIterator($this->folder);
@@ -196,12 +190,6 @@ class FileCheck
 			// Iterator es un DirectoryIterator: http://php.net/manual/es/class.directoryiterator.php
 			while($Iterator->valid()) {
 				if (!$Iterator->isDot() && $cont <= $this->limitFolderRecursion) {
-					/**
-					echo 'SubPathName: ' . $Iterator->getSubPathName() . "\n";
-					echo 'SubPath:     ' . $Iterator->getSubPath() . "\n";
-					echo 'Key:         ' . $Iterator->key() . "\n";
-					echo 'Hijos:       ' . $Iterator->callHasChildren() . "\n\n";
-					/**/
 					$this->checkFile($Iterator->Key(), $Iterator->isDir());
 					$cont++;
 				}
