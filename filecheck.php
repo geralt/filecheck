@@ -8,8 +8,8 @@ $parentFolder = '/path/parent/folder';
 
 // process
 $f = new FileCheck($folder, $parentFolder, $folderClavesFirma);
-$f->setEmailFrom('jorge@nosoynadie.net');
-$f->setEmailTo('aquinadie@gmail.com');
+$f->setEmailFrom('sender@example.com');
+$f->setEmailTo('someone@example.com');
 if ( isset($_GET['log']) && !empty($_GET['log']) ) $f->setDebug(true);
 $f->run();
 $f->sendReportByEmail();
