@@ -38,9 +38,7 @@ class FileCheck
 	 *
 	 * @return void
 	 */	
-	public function __construct(
-			$folder, 
-			$folderClavesFirma)
+	public function __construct($folder, $folderClavesFirma)
 	{
 		$this->setFolder($folder);
 		$this->folderClavesFirma($folderClavesFirma);
