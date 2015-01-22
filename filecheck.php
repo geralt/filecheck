@@ -2,18 +2,6 @@
 set_time_limit(0);
 error_reporting(0);
 
-// variables
-$folderClavesFirma = '/path/to/log/folder';
-$folder = '/path/folder/to/scan';
-
-// process
-$f = new FileCheck($folder, $folderClavesFirma);
-$f->setEmailFrom('sender@example.com');
-$f->setEmailTo('someone@example.com');
-if ( PHP_SAPI !== 'cli' && isset($_GET['log']) && !empty($_GET['log']) ) $f->setDebug(true);
-$f->run();
-$f->sendReportByEmail();
-
 /**
  * File integrity checker class
  */
