@@ -4,10 +4,9 @@ error_reporting(0);
 
 $folderClavesFirma = '/path/to/log/folder';
 $folder = '/path/folder/to/scan';
-$parentFolder = '/path/parent/folder';
 
 // process
-$f = new FileCheck($folder, $parentFolder, $folderClavesFirma);
+$f = new FileCheck($folder, $folderClavesFirma);
 $f->setEmailFrom('sender@example.com');
 $f->setEmailTo('someone@example.com');
 if ( isset($_GET['log']) && !empty($_GET['log']) ) $f->setDebug(true);
@@ -21,7 +20,6 @@ $f->sendReportByEmail();
 class FileCheck
 {
 	private $folder = null;
-	private $parentFolder = '/tmp';
 	private $folderClavesFirma;
 	private $lastReportFile;
 	private $lastReport = array();
@@ -35,12 +33,16 @@ class FileCheck
 	private $limitFolderRecursion = 3500;
     private $debug;    
 	
+	/**
+	 * Constructor
+	 *
+	 * @return void
+	 */	
 	public function __construct(
 			$folder, 
-			$parentFolder, $folderClavesFirma)
+			$folderClavesFirma)
 	{
 		$this->setFolder($folder);
-		$this->setParentFolder($parentFolder);
 		$this->folderClavesFirma($folderClavesFirma);
 		$this->setLoggerFolder();
 		@date_default_timezone_set('Europe/Madrid');
@@ -48,6 +50,12 @@ class FileCheck
         $this->debug = FALSE;
 	}
 	
+	/**
+	 * Set working folder
+	 *
+	 * @param string $value Folder's path to scan
+	 * @return void
+	 */		
 	public function setFolder($value)
 	{
 		if(!empty($value) && is_dir($value))
@@ -55,6 +63,13 @@ class FileCheck
 		else
 			throw new \InvalidArgumentException('Cannot find the path '.$value);
 	}
+	
+	/**
+	 * Set destination email 
+	 *
+	 * @param string $value Destination email.
+	 * @return void
+	 */
 	public function setEmailTo($value)
 	{
 		if(!empty($value))
@@ -62,21 +77,27 @@ class FileCheck
 		else
 			throw new \InvalidArgumentException('Empty value');
 	}
+	
+	/**
+	 * Set sender email 
+	 *
+	 * @param string $value Email from sender
+	 * @return void
+	 */
 	public function setEmailFrom($value)
 	{
 		if(!empty($value))
 			$this->emailFrom = $value;
 		else
 			throw new \InvalidArgumentException('Empty value');
-	}
+	}	
 	
-	public function setParentFolder($value)
-	{
-		if(!empty($value) && is_dir($value))
-			$this->parentFolder = $value;
-		else
-			throw new \InvalidArgumentException('Cannot find the path '.$value);
-	}
+	/**
+	 * Set log's folder
+	 *
+	 * @param string $value Path to the folder where store log files.
+	 * @return void
+	 */	
 	public function folderClavesFirma($value)
 	{
 		if(!empty($value) && is_dir($value))
@@ -84,12 +105,34 @@ class FileCheck
 		else
 			throw new \InvalidArgumentException('Cannot find the path '.$value);
 	}
+	
+	/**
+	 * Set debug level
+	 *
+	 * @param boolean $value TRUE/FALSE value for debug.
+	 * @return void
+	 */
     public function setDebug($value)
 	{
         $this->debug = (int) $value;
 	}
-    
 	
+	/**
+	 * Set maximum file to load
+	 *
+	 * @param int $value Maximum files to be load
+	 * @return void
+	 */
+    public function setNumFileLimit($value)
+	{
+        $this->limitFolderRecursion = (int) $value;
+	}
+    
+	/**
+	 * Run process
+	 *
+	 * @return void
+	 */
 	public function run()
 	{
 		if( FALSE !== $this->readLastReport() )
@@ -101,20 +144,17 @@ class FileCheck
 
 			$this->saveActualReport();
 		} 
-
 	}
 	
 	/**
-	 * Save the data using the specified key
+	 * Load information from last report file.
 	 *
-	 * @param string $key Key for identifying cache entry
-	 * @param mixed $data Data to cache
-	 * @return boolean Success/fail of save
+	 * @return void
 	 */
 	private function readLastReport()
 	{
 		/*
-		 * Controlar que no nos puedan meter un fichero enorme y petar el script al leerlo
+		 * ToDo: check last log file's size to avoid security problem with it.
 		 */
 		$this->lastReport = array();
 		if ( is_dir($this->folderClavesFirma))
@@ -123,7 +163,6 @@ class FileCheck
 			if (is_array($t) && !empty($t))
 			{
 				$this->lastReportFile = $this->folderClavesFirma . DIRECTORY_SEPARATOR . $t[0];
-				//$this->lastReport = file($this->lastReportFile);
 				$t = file_get_contents($this->lastReportFile);
 				$this->lastReport = unserialize($t);
 			}
