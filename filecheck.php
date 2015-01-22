@@ -2,17 +2,17 @@
 set_time_limit(0);
 error_reporting(0);
 
+// variables
 $folderClavesFirma = '/path/to/log/folder';
 $folder = '/path/folder/to/scan';
 
 // process
-$f = new FileCheck($folder, $folderClavesFirma);
+$f = new FileCheck($folder, $parentFolder, $folderClavesFirma);
 $f->setEmailFrom('sender@example.com');
 $f->setEmailTo('someone@example.com');
-if ( isset($_GET['log']) && !empty($_GET['log']) ) $f->setDebug(true);
+if ( PHP_SAPI !== 'cli' && isset($_GET['log']) && !empty($_GET['log']) ) $f->setDebug(true);
 $f->run();
 $f->sendReportByEmail();
-
 
 /**
  * File integrity checker class
@@ -23,9 +23,9 @@ class FileCheck
 	private $folderClavesFirma;
 	private $lastReportFile;
 	private $lastReport = array();
-	private $actualReportFile;			# nombre del fichero del informe
-	private $actualReport = array();    # informe actual
-	private $emailReport = array();     # contenido del email
+	private $actualReportFile;
+	private $actualReport = array();
+	private $emailReport = array();
 	
 	private $emailTo;
 	private $emailFrom;
@@ -139,7 +139,6 @@ class FileCheck
 				$this->runWithRecursiveDirectoryIterator();
 			else
 				$this->runWithDirectoryIterator();
-
 			$this->saveActualReport();
 		} 
 	}
@@ -166,7 +165,6 @@ class FileCheck
 			}
 		}
 	}
-
 	
 	/**
 	 * Save the report data into log file
@@ -207,7 +205,6 @@ class FileCheck
 			throw new \InvalidArgumentException('the Folder var is empty');	
 		}
 	}
-
 	/**
 	 * Walk recursively through working directory using RecursiveDirectoryIterator
 	 *
@@ -260,7 +257,6 @@ class FileCheck
 		// http://php.net/manual/es/directoryiterator.isdir.php
 		if ( !$isDir)
 			$out['md5'] = md5_file($file);
-
 		$index = $this->recursive_array_search($file, $this->lastReport);
 		if (FALSE !== $index ) {
 			if ( $out['md5'] != $this->lastReport[$index]['md5'] )
@@ -353,7 +349,6 @@ class FileCheck
 		$message = 'FileCheck Report' . "\n\r" . implode('\n\r', $this->emailReport);
 		@mail($this->emailTo, 'FileCheck Report ' . $this->actualReportFile , $message, implode("\r\n", $headers), $parameters);
 	}
-
 	/**
 	 * Write formatted text for several environment
 	 *
@@ -373,5 +368,4 @@ class FileCheck
 				echo $text . PHP_EOL;
 		}
 	}
-
 }
