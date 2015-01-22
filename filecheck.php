@@ -7,7 +7,7 @@ $folderClavesFirma = '/path/to/log/folder';
 $folder = '/path/folder/to/scan';
 
 // process
-$f = new FileCheck($folder, $parentFolder, $folderClavesFirma);
+$f = new FileCheck($folder, $folderClavesFirma);
 $f->setEmailFrom('sender@example.com');
 $f->setEmailTo('someone@example.com');
 if ( PHP_SAPI !== 'cli' && isset($_GET['log']) && !empty($_GET['log']) ) $f->setDebug(true);
@@ -26,12 +26,10 @@ class FileCheck
 	private $actualReportFile;
 	private $actualReport = array();
 	private $emailReport = array();
-	
 	private $emailTo;
 	private $emailFrom;
-	
 	private $limitFolderRecursion = 3500;
-    private $debug;    
+	private $debug;
 	
 	/**
 	 * Constructor
@@ -45,7 +43,7 @@ class FileCheck
 		$this->setLoggerFolder();
 		@date_default_timezone_set('Europe/Madrid');
 		$this->actualReportFile = time();
-        $this->debug = FALSE;
+		$this->debug = FALSE;
 	}
 	
 	/**
