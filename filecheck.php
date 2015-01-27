@@ -8,7 +8,7 @@ error_reporting(0);
 class FileCheck
 {
 	private $folder = null;
-	private $folderClavesFirma;
+	private $logFolder;
 	private $lastReportFile;
 	private $lastReport = array();
 	private $actualReportFile;			# nombre del fichero del informe
@@ -27,10 +27,10 @@ class FileCheck
 	 *
 	 * @return void
 	 */	
-	public function __construct($folder, $folderClavesFirma, $excludedFolders=array())
+	public function __construct($folder, $logFolder, $excludedFolders=array())
 	{
 		$this->setFolder($folder);
-		$this->folderClavesFirma($folderClavesFirma);
+		$this->setLogFolder($logFolder);
 		$this->setLoggerFolder();
 		@date_default_timezone_set('Europe/Madrid');
 		$this->actualReportFile = time();
@@ -86,10 +86,10 @@ class FileCheck
 	 * @param string $value Path to the folder where store log files.
 	 * @return void
 	 */	
-	public function folderClavesFirma($value)
+	public function setLogFolder($value)
 	{
 		if(!empty($value) && is_dir($value))
-			$this->folderClavesFirma = $value;
+			$this->logFolder = $value;
 		else
 			throw new \InvalidArgumentException('Cannot find the path '.$value);
 	}
@@ -156,12 +156,12 @@ class FileCheck
 		 * ToDo: check last log file's size to avoid security problem with it.
 		 */
 		$this->lastReport = array();
-		if ( is_dir($this->folderClavesFirma))
+		if ( is_dir($this->logFolder))
 		{
-			$t = array_diff( scandir ( $this->folderClavesFirma, TRUE), array('..', '.'));
+			$t = array_diff( scandir ( $this->logFolder, TRUE), array('..', '.'));
 			if (is_array($t) && !empty($t))
 			{
-				$this->lastReportFile = $this->folderClavesFirma . DIRECTORY_SEPARATOR . $t[0];
+				$this->lastReportFile = $this->logFolder . DIRECTORY_SEPARATOR . $t[0];
 				$t = file_get_contents($this->lastReportFile);
 				$this->lastReport = unserialize($t);
 			}
@@ -175,7 +175,7 @@ class FileCheck
 	 */
 	private function saveActualReport()
 	{
-		@file_put_contents( $this->folderClavesFirma . DIRECTORY_SEPARATOR . $this->actualReportFile, serialize($this->actualReport), LOCK_EX);
+		@file_put_contents( $this->logFolder . DIRECTORY_SEPARATOR . $this->actualReportFile, serialize($this->actualReport), LOCK_EX);
 	}
 	
 	/**
@@ -350,12 +350,12 @@ class FileCheck
 	 */
 	private function setLoggerFolder()
 	{
-		if (!is_dir($this->folderClavesFirma))
+		if (!is_dir($this->logFolder))
 		{
 			// create
-			@mkdir($this->folderClavesFirma, 0650);
+			@mkdir($this->logFolder, 0650);
 			// and rights
-			@chown($this->folderClavesFirma, shell_exec("whoami"));
+			@chown($this->logFolder, shell_exec("whoami"));
 		}		
 	}
 	
