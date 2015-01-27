@@ -17,5 +17,3 @@ $f->setExcludedFolders(array('/path/folder1', '/path/folder2'));
 $f->setNumFileLimit(5000);
 $f->run();
 $f->sendReportByEmail();
-
-?>
