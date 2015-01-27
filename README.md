@@ -5,6 +5,8 @@ This is a simple PHP script that check folder's files integrity looking for adde
 
 Basic usage:
 
+	set_time_limit(0);
+	error_reporting(0);
 	require ('filecheck.php');
 	// set variables
     $folderClavesFirma = '/path/to/log/folder';
@@ -14,6 +16,8 @@ Basic usage:
     $f = new FileCheck($folder, $folderClavesFirma);
     $f->setEmailFrom('sender@example.com');
     $f->setEmailTo('someone@example.com');
+	$f->setExcludedFolders(array( $folder . '/folder1', $folder . '/folder2'));
+	$f->setNumFileLimit(5000);
     $f->run();
     $f->sendReportByEmail();
 
