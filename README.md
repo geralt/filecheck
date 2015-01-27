@@ -9,16 +9,18 @@ Basic usage:
 	error_reporting(0);
 	require ('filecheck.php');
 	// set variables
-    $folderClavesFirma = '/path/to/log/folder';
+    $logFolder = '/path/to/log/folder';
     $folder = '/path/folder/to/scan';
     
-    // executing process
-    $f = new FileCheck($folder, $folderClavesFirma);
+    // configuring process
+    $f = new FileCheck($folder, $logFolder);
     $f->setEmailFrom('sender@example.com');
     $f->setEmailTo('someone@example.com');
 	$f->setExcludedFolders(array( $folder . '/folder1', $folder . '/folder2'));
 	$f->setNumFileLimit(5000);
-    $f->run();
+	// execute    
+	$f->run();
+	// send report
     $f->sendReportByEmail();
 
 
