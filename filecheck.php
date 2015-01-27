@@ -11,27 +11,31 @@ class FileCheck
 	private $folderClavesFirma;
 	private $lastReportFile;
 	private $lastReport = array();
-	private $actualReportFile;
-	private $actualReport = array();
-	private $emailReport = array();
+	private $actualReportFile;			# nombre del fichero del informe
+	private $actualReport = array();    # informe actual
+	private $emailReport = array();     # contenido del email
+	
 	private $emailTo;
 	private $emailFrom;
+	
 	private $limitFolderRecursion = 3500;
-	private $debug;
+    private $debug;
+	private $excludedFolders = array();
 	
 	/**
 	 * Constructor
 	 *
 	 * @return void
 	 */	
-	public function __construct($folder, $folderClavesFirma)
+	public function __construct($folder, $folderClavesFirma, $excludedFolders=array())
 	{
 		$this->setFolder($folder);
 		$this->folderClavesFirma($folderClavesFirma);
 		$this->setLoggerFolder();
 		@date_default_timezone_set('Europe/Madrid');
 		$this->actualReportFile = time();
-		$this->debug = FALSE;
+        $this->debug = FALSE;
+        $this->setExcludedFolders($excludedFolders);
 	}
 	
 	/**
@@ -99,6 +103,18 @@ class FileCheck
     public function setDebug($value)
 	{
         $this->debug = (int) $value;
+	}
+	
+	/**
+	 * Set folders excluded of scan
+	 *
+	 * @param array $values array with folders paths.
+	 * @return void
+	 */
+    public function setExcludedFolders($values)
+	{
+        if(is_array($values) && !empty($values))
+			$this->excludedFolders = array_map('strtolower', $values);
 	}
 	
 	/**
@@ -177,11 +193,16 @@ class FileCheck
 			
 			foreach ($dir as $fileinfo) {
 				if (!$fileinfo->isDot() && $cont <= $this->limitFolderRecursion) {
-					if ( $fileinfo->isDir())
-						$this->runWithDirectoryIterator ($fileinfo->getPathname(), $cont);
-					else 
+					if ( $fileinfo->isDir() ) {
+                        if ( FALSE === $this->search_in_array($fileinfo->getPathname(), $this->excludedFolders )) {
+							$this->runWithDirectoryIterator ($fileinfo->getPathname(), $cont);
+							//$cont++;
+						}
+					}
+					else {
 						$this->checkFile($fileinfo->getPathname(), $fileinfo->isDir());
-					$cont++;
+						$cont++;
+					}
 				}
 			}
 			if (empty($folder))
@@ -210,8 +231,13 @@ class FileCheck
 			// Iterator es un DirectoryIterator: http://php.net/manual/es/class.directoryiterator.php
 			while($Iterator->valid()) {
 				if (!$Iterator->isDot() && $cont <= $this->limitFolderRecursion) {
-					$this->checkFile($Iterator->Key(), $Iterator->isDir());
-					$cont++;
+					//if ( !$Iterator->isDir() || ( $Iterator->isDir() && FALSE === $this->search_in_array(strtolower($Iterator->Key()), array_map('strtolower', $this->excludedFolders)) ) )
+					if ( FALSE === $this->search_in_array(strtolower($Iterator->Key()), $this->excludedFolders) )
+					{
+						$this->checkFile($Iterator->Key(), $Iterator->isDir());
+						$cont++;
+					}
+					
 				}
 				$Iterator->next();
 			}
@@ -221,6 +247,8 @@ class FileCheck
 			throw new \InvalidArgumentException('the Folder var is empty');	
 		}
 	}
+	
+	
 	
 	/**
 	 * Check file's status and saving into logging variable
@@ -291,6 +319,29 @@ class FileCheck
         }
 		return false;
 	}
+	
+	/**
+	 * Search string into array's values
+	 *
+	 * @param string $needle String to locate
+	 * @param array $haystack Array where we search $needle
+	 * @return int/FALSE Returns the key for needle if it is found in the array, FALSE otherwise
+	 * @source http://php.net/manual/es/function.array-search.php#91365
+	 */
+	private function search_in_array($needle, $haystack) 
+	{
+		$needle = str_replace('\\', '/', $needle);
+        $out = FALSE;
+		foreach ($haystack as $key=>$value) {
+			$value = str_replace('\\', '/', $value);
+            $index = stripos( $needle, $value);
+            //print_r ( array($needle, $value, $index) );    
+            if ( FALSE !== $index )
+                $out = $key;
+        }
+		return $out;
+	}
+	
     
 	/**
 	 * Create folder for the log file
@@ -319,8 +370,9 @@ class FileCheck
 		if(empty($this->emailFrom) or is_null($this->emailFrom)) return;
 		if(empty($this->emailTo) or is_null($this->emailTo)) return;
 		
-		if( PHP_SAPI !== 'cli' && $this->debug == TRUE) $this->writeText($this->emailReport);
-		//return;
+		if( $this->debug == TRUE) {
+			$this->writeText($this->emailReport);
+		}
 		$headers = array(
 			'From' => $this->emailFrom,
 			'Reply-To' => $this->emailFrom,
@@ -332,7 +384,7 @@ class FileCheck
 			//'Content-type' => 'text/html; charset=iso-8859-1',
 		);
 		$parameters = '';
-		$message = 'FileCheck Report' . "\n\r" . implode('\n\r', $this->emailReport);
+		$message = 'FileCheck Report' . "\n\r" . implode("\n", $this->emailReport);
 		@mail($this->emailTo, 'FileCheck Report ' . $this->actualReportFile , $message, implode("\r\n", $headers), $parameters);
 	}
 	/**
