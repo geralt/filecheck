@@ -7,7 +7,9 @@ Basic usage:
 
 	set_time_limit(0);
 	error_reporting(0);
+
 	require ('filecheck.php');
+
 	// set variables
     $logFolder = '/path/to/log/folder';
     $folder = '/path/folder/to/scan';
@@ -18,9 +20,12 @@ Basic usage:
     $f->setEmailTo('someone@example.com');
 	$f->setExcludedFolders(array( $folder . '/folder1', $folder . '/folder2'));
 	$f->setNumFileLimit(5000);
+
 	// execute    
 	$f->run();
 	// send report
     $f->sendReportByEmail();
+
+To-Do.
 
 
