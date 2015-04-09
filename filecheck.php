@@ -100,7 +100,7 @@ class FileCheck
      */
     public function setDebug($value)
     {
-        $this->debug = (int) $value;
+        $this->debug = (bool) $value;
     }
     
     /**
@@ -173,6 +173,7 @@ class FileCheck
      */
     private function saveActualReport()
     {
+        if ( TRUE === $this->debug)  $this->writeText('Enter into saveActualReport()');
         @file_put_contents( $this->logFolder . DIRECTORY_SEPARATOR . $this->actualReportFile, serialize($this->actualReport), LOCK_EX);
     }
     
@@ -183,6 +184,7 @@ class FileCheck
      */
     private function runWithDirectoryIterator($folder='', $cont=0)
     {
+        if ( TRUE === $this->debug)  $this->writeText('Enter into runWithDirectoryIterator()');
         if(!empty($this->folder) or ( func_num_args() > 0 && !empty($folder))) {
             if (empty($folder))
                 $dir = new \DirectoryIterator($this->folder);
@@ -193,6 +195,7 @@ class FileCheck
                 if (!$fileinfo->isDot() && $cont <= $this->limitFolderRecursion) {
                     if ( $fileinfo->isDir() ) {
                         if ( FALSE === $this->search_in_array($fileinfo->getPathname(), $this->excludedFolders )) {
+                            if ( TRUE === $this->debug)  $this->writeText($fileinfo->getPathname());
                             $this->runWithDirectoryIterator ($fileinfo->getPathname(), $cont);
                             //$cont++;
                         }
@@ -219,8 +222,10 @@ class FileCheck
     {
         $cont = 0;
         if(!empty($this->folder)) {
+            if ( TRUE === $this->debug)  $this->writeText('Enter into runWithRecursiveDirectoryIterator()');
+            
             // http://php.net/manual/es/class.recursivedirectoryiterator.php
-            $Directory = new \RecursiveDirectoryIterator($this->folder);
+            $Directory = new \RecursiveDirectoryIterator($this->folder, RecursiveDirectoryIterator::FOLLOW_SYMLINKS);
             // http://php.net/manual/es/class.recursiveiteratoriterator.php
             $Iterator = new \RecursiveIteratorIterator($Directory, \RecursiveIteratorIterator::CHILD_FIRST);
             // http://php.net/manual/es/class.regexiterator.php
@@ -232,6 +237,7 @@ class FileCheck
                     //if ( !$Iterator->isDir() || ( $Iterator->isDir() && FALSE === $this->search_in_array(strtolower($Iterator->Key()), array_map('strtolower', $this->excludedFolders)) ) )
                     if ( FALSE === $this->search_in_array(strtolower($Iterator->Key()), $this->excludedFolders) )
                     {
+                        if ( TRUE === $this->debug)  $this->writeText($Iterator->Key());
                         $this->checkFile($Iterator->Key(), $Iterator->isDir());
                         $cont++;
                     }
@@ -368,21 +374,21 @@ class FileCheck
         if(empty($this->emailFrom) or is_null($this->emailFrom)) return;
         if(empty($this->emailTo) or is_null($this->emailTo)) return;
         
-        if( $this->debug == TRUE) {
+        if( TRUE === $this->debug ) {
             $this->writeText($this->emailReport);
         }
         $headers = array(
-            'From' => $this->emailFrom,
-            'Reply-To' => $this->emailFrom,
-            'To' => $this->emailTo,
-            'Subject' => 'FileCheck Report ' . $this->actualReportFile,
-            'X-Mailer' => 'PHP/' . phpversion(),
-            'MIME-Version' => '1.0',
-            // para HTML
-            //'Content-type' => 'text/html; charset=iso-8859-1',
+            'From: ' . $this->emailFrom,
+            'Reply-To: ' . $this->emailFrom,
+            'To: ' . $this->emailTo,
+            'Subject: ' . 'FileCheck Report ' . date('G:i:s m-d-Y', $this->actualReportFile),
+            'X-Mailer: ' . 'PHP/' . phpversion(),
+            'MIME-Version: ' . '1.0',
+            // for HTML
+            //'Content-type: text/html; charset=iso-8859-1',
         );
         $parameters = '';
-        $message = 'FileCheck Report' . "\n\r" . implode("\n", $this->emailReport);
+        $message = wordwrap('FileCheck Report:' . "\n" . implode("\r\n", $this->emailReport), 70, "\r\n");
         @mail($this->emailTo, 'FileCheck Report ' . $this->actualReportFile , $message, implode("\r\n", $headers), $parameters);
     }
     /**
