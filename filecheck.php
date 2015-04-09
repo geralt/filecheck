@@ -389,7 +389,7 @@ class FileCheck
         );
         $parameters = '';
         $message = wordwrap('FileCheck Report:' . "\n" . implode("\r\n", $this->emailReport), 70, "\r\n");
-        @mail($this->emailTo, 'FileCheck Report ' . $this->actualReportFile , $message, implode("\r\n", $headers), $parameters);
+        @mail($this->emailTo, 'FileCheck Report ' . date('G:i:s m-d-Y', $this->actualReportFile) , $message, implode("\r\n", $headers), $parameters);
     }
     /**
      * Write formatted text for several environment
