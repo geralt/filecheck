@@ -20,6 +20,8 @@ class FileCheck
     private $debug;
     private $excludedFolders = array();
     
+    private $numLogFiles = 10;
+    
     /**
      * Constructor
      *
@@ -127,6 +129,18 @@ class FileCheck
     }
     
     /**
+     * Set maximum log files to keep on disk
+     *
+     * @param int $value Maximum files to keep
+     * @return void
+     */
+    public function setNumLogFiles($value)
+    {
+        $this->numLogFiles = ((int) $value >= 1 ) ? (int) $value : 10;
+    }
+    
+    
+    /**
      * Run process
      *
      * @return void
@@ -175,8 +189,28 @@ class FileCheck
     {
         if ( TRUE === $this->debug)  $this->writeText('Enter into saveActualReport()');
         @file_put_contents( $this->logFolder . DIRECTORY_SEPARATOR . $this->actualReportFile, serialize($this->actualReport), LOCK_EX);
+        $this->cleanLogFolder();
     }
     
+    /**
+     * Clean log folder
+     *
+     * @return void
+     */
+    private function cleanLogFolder()
+    {
+        if ( is_dir($this->logFolder))
+        {
+            $t = array_diff( scandir ( $this->logFolder, TRUE), array('..', '.'));
+            if (is_array($t) && !empty($t))
+            {
+                foreach($t as $c=>$v)
+                {
+                    if( $c > $this->numLogFiles - 1) @unlink( $this->logFolder . DIRECTORY_SEPARATOR . $v);
+                }
+            } 
+        }
+    }
     /**
      * Walk recursively through working directory using DirectoryIterator
      *
