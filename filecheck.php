@@ -1,8 +1,8 @@
 <?php
-
 /**
  * File integrity checker class
  */
+ 
 class FileCheck
 {
     private $folder = null;
