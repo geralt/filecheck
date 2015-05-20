@@ -2,18 +2,19 @@
 /*
 Example
 */
-require ('filecheck.php');
+require_once ('vendor/autoload.php');
 
 // variables
-$logFolder = '/path/to/log/folder';
-$folder = '/path/folder/to/scan';
+$logFolder = dirname ( __FILE__) . DIRECTORY_SEPARATOR . 'log';
+$folder = dirname( __FILE__);
 
 // process
-$f = new FileCheck($folder, $logFolder);
+$f = new \FileCheck\FileCheck($folder, $logFolder);
 $f->setEmailFrom('sender@example.com');
 $f->setEmailTo('someone@example.com');
 if ( PHP_SAPI !== 'cli' && isset($_GET['log']) && !empty($_GET['log']) ) $f->setDebug(true);
-$f->setExcludedFolders(array('/path/folder1', '/path/folder2'));
+$f->setExcludedFolders(array( $folder . '/log'));
 $f->setNumFileLimit(5000);
 $f->run();
-$f->sendReportByEmail();
+$f->getReport();
+//$f->sendReportByEmail();

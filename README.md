@@ -8,22 +8,24 @@ Basic usage:
 	set_time_limit(0);
 	error_reporting(0);
 
-	require ('filecheck.php');
-
-	// set variables
-    $logFolder = '/path/to/log/folder';
-    $folder = '/path/folder/to/scan';
-    
-    // configuring process
-    $f = new FileCheck($folder, $logFolder);
+	require_once ('vendor/autoload.php');
+	
+	// variables
+	$logFolder = dirname ( __FILE__) . DIRECTORY_SEPARATOR . 'log';
+	$folder = dirname( __FILE__);
+	
+	// process
+	$f = new \FileCheck\FileCheck($folder, $logFolder);
     $f->setEmailFrom('sender@example.com');
     $f->setEmailTo('someone@example.com');
-	$f->setExcludedFolders(array( $folder . '/folder1', $folder . '/folder2'));
+	$f->setExcludedFolders(array( $folder . '/log'));
 	$f->setNumFileLimit(5000);
 
 	// execute    
 	$f->run();
-	// send report
+    // view report
+    $f->getReport();
+	// send report by email
     $f->sendReportByEmail();
 
 To-Do.

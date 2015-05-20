@@ -2,7 +2,8 @@
 /**
  * File integrity checker class
  */
- 
+namespace FileCheck;
+
 class FileCheck
 {
     private $folder = null;
@@ -259,7 +260,7 @@ class FileCheck
             if ( TRUE === $this->debug)  $this->writeText('Enter into runWithRecursiveDirectoryIterator()');
             
             // http://php.net/manual/es/class.recursivedirectoryiterator.php
-            $Directory = new \RecursiveDirectoryIterator($this->folder, RecursiveDirectoryIterator::FOLLOW_SYMLINKS);
+            $Directory = new \RecursiveDirectoryIterator($this->folder, \RecursiveDirectoryIterator::FOLLOW_SYMLINKS);
             // http://php.net/manual/es/class.recursiveiteratoriterator.php
             $Iterator = new \RecursiveIteratorIterator($Directory, \RecursiveIteratorIterator::CHILD_FIRST);
             // http://php.net/manual/es/class.regexiterator.php
@@ -373,7 +374,6 @@ class FileCheck
         foreach ($haystack as $key=>$value) {
             $value = str_replace('\\', '/', $value);
             $index = stripos( $needle, $value);
-            //print_r ( array($needle, $value, $index) );    
             if ( FALSE !== $index )
                 $out = $key;
         }
@@ -396,6 +396,11 @@ class FileCheck
             @chown($this->logFolder, shell_exec("whoami"));
         }        
     }
+	
+	public function getReport()
+	{
+		$this->writeText($this->emailReport);
+	}
     
     /**
      * Send report by email
