@@ -94,7 +94,10 @@ class FileCheck
         else
             throw new \InvalidArgumentException('Cannot find the path '.$value);
     }
-    
+	public function getLogFolder()
+    {
+        return $this->logFolder = $value;
+	}
     /**
      * Set debug level
      *

@@ -14,21 +14,15 @@ class FilecheckTest extends \PHPUnit_Framework_TestCase
     /**
      * Test the getter/setter for the filter data in collection
      * 
-     * @covers \Expose\FilterCollection::getFilterData
-     * @covers \Expose\FilterCollection::setFilterData
+     * @covers \FileCheck\FileCheck::getLogFolder
+     * @covers \FileCheck\FileCheck::setLogFolder
      */
-    public function testGetSetFilterData()
+    public function testGetSetLogFolder()
     {
         $data = array(
-            array('id' => 1234)
+            array('folder' => dirname(__FILE__))
         );
-
-        $filter = new \Expose\Filter();
-        $filter->setId(1234);
-
-        $this->check->setFilterData($data);
-
-        $result = $this->check->getFilterData();
-        $this->assertEquals($result[0], $filter);
+        $this->check->setLogFolder($data['folder']);
+        $this->assertEquals($data['folder'], $this->check->getLogFolder());
     }
 }
