@@ -21,8 +21,7 @@
         "phpmd/phpmd": "dev-master"
     },
     "autoload": {
-        "psr-4": {
-            "": "FileCheck/" 
-        }
+        "psr-0": { "": "" },
+		"files": ["vendor/autoload.php"]
     }
 }

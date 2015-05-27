@@ -2,6 +2,8 @@
 
 namespace FileCheck;
 
+use FileCheck;
+
 class FilecheckTest extends \PHPUnit_Framework_TestCase 
 {
     private $check = null;
