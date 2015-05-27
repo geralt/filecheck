@@ -8,7 +8,7 @@
     "authors":[
         {
             "name":"Jorge Hoya",
-            "email":"jorge@pnosoynadie.net",
+            "email":"jorge@nosoynadie.net",
             "homepage":"http://www.nosoynadie.net/"
         }
     ],
@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "FileCheck": ""
+            "": ""
         }
     }
 }
