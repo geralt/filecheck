@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
-         convertErrorsToExceptions="true"
-         convertWarningsToExceptions="true"
-         convertNoticesToExceptions="true"
-         mapTestClassNameToCoveredClassName="true"
          bootstrap="./vendor/autoload.php"
-         strict="true"
+         strict="false"
          verbose="true"
          colors="true">
     <testsuites>
