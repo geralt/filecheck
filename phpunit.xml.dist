@@ -11,8 +11,7 @@
     </testsuites>
 	<php>
 		<!-- Constants -->
-		<const name="PHPUNIT_TESTSUITE" value="true" />
-		<const name="TRAVIS_TESTSUITE" value="true" />
+
    </php>
 </phpunit>
 <!-- https://github.com/YOURLS/YOURLS-unit-tests/blob/master/phpunit-travis.xml.dist -->
