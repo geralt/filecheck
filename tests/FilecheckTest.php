@@ -19,18 +19,14 @@ class FilecheckTest extends \PHPUnit_Framework_TestCase
      * @covers \Expose\FilterCollection::getFilterData
      * @covers \Expose\FilterCollection::setFilterData
      */
-    public function testGetSetFilterData()
+    public function testGetSetDebug()
     {
         $data = array(
             array('id' => 1234)
         );
 
-        $filter = new \Expose\Filter();
-        $filter->setId(1234);
-
-        $this->check->setFilterData($data);
-
-        $result = $this->check->getFilterData();
-        $this->assertEquals($result[0], $filter);
+        $this->check->setDebug(true);
+        $result = $this->check->getDebug();
+        $this->assertEquals($result, $filter);
     }
 }

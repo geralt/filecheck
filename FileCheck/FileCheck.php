@@ -105,6 +105,15 @@ class FileCheck
     {
         $this->debug = (bool) $value;
     }
+    /**
+     * Get debug level
+     *
+     * @return boolean debug status
+     */
+	public function getDebug()
+    {
+        return $this->debug;
+    }
     
     /**
      * Set folders excluded of scan
