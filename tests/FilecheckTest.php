@@ -4,7 +4,7 @@
 
 //use FileCheck;
 error_reporting(E_ALL);
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../vendor/autoload.phpa';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../vendor/autoload.php';
 
 class FilecheckTest extends \PHPUnit_Framework_TestCase 
 {
