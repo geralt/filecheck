@@ -5,4 +5,4 @@ before_script:
   - php composer.phar install --dev
 php:
   - 5.4
-script: phpunit --debug --verbose tests --configuration tests/phpunit.xmls
+script: phpunit --debug --verbose tests --configuration tests/phpunit.xmls --stop-on-error --colors
