@@ -1,6 +1,5 @@
 <?php
-
-function autoload($className)
+spl_autoload_register(function($className)
 {
     $className = ltrim($className, '\\');
     $fileName  = '';
@@ -13,8 +12,5 @@ function autoload($className)
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 	echo 'Fichero a buscar: ' . $fileName;
     require_once ($fileName);
-}
-spl_autoload_register('autoload');
+});
 echo 'Exiting ' __FILE__; 
-echo 
-
