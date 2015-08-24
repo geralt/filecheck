@@ -14,10 +14,10 @@ class FilecheckTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the getter/setter for the filter data in collection
+     * Test the getter/setter for the debug status
      * 
-     * @covers \Expose\FilterCollection::getFilterData
-     * @covers \Expose\FilterCollection::setFilterData
+     * @covers \FileCheck\FileCheck::setDebug
+     * @covers \FileCheck\FileCheck::getDebug
      */
     public function testGetSetDebug()
     {
