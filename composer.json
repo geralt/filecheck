@@ -20,7 +20,7 @@
 		"phpunit/php-invoker": "*"
     },
     "autoload": {
-        
+        "psr-0": {"FileCheck\\": "vendor/"}
 		"files": ["vendor/autoload.php"]
     }
 }
