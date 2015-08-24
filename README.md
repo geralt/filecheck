@@ -1,5 +1,6 @@
 # filecheck
 File Integrity Checker.
+![Build Status Images](https://travis-ci.org/geralt/filecheck.svg)
 
 This is a simple PHP script that check folder's files integrity looking for added, modified or deleted files. It could be usefull to check website's folder to see if someone has upload some unwanted file.
 
