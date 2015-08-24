@@ -1,4 +1,5 @@
 <?php
+/**/
 define ('BASEDIR', dirname(__FILE__));
 
 spl_autoload_register( function($className){
@@ -14,3 +15,10 @@ spl_autoload_register( function($className){
 	echo 'Fichero a buscar: ' . $fileName . ' para la clase: ' . $className;
     require_once ($fileName);
 });
+/**/
+
+/**
+require_once( dirname(__FILE__)  . DIRECTORY_SEPARATOR . 'AutoLoader.php');
+// Register the directory to your include files
+AutoLoader::registerDirectory( dirname(__FILE__)  . DIRECTORY_SEPARATOR . '../FileCheck/');
+/**/

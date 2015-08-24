@@ -6,8 +6,7 @@ class FilecheckTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        echo 'Begining test....';
-		$this->check = new \FileCheck\FileCheck();
+		$this->check = new \FileCheck_FileCheck();
     }
 
     /**
@@ -18,7 +17,6 @@ class FilecheckTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetDebug()
     {
-
         $this->check->setDebug(true);
         $result = $this->check->getDebug();
         $this->assertEquals($result, $filter);
