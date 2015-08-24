@@ -4,7 +4,7 @@ define ('BASEDIR', __DIR__);
 
 spl_autoload_register( function($className){
     echo $className . PHP_EOL;
-    if ($className !== 'FileCheck_FileCheck') {return;}
+    if (substr($className, 0, 9) !== 'FileCheck') {return;}
     $className = ltrim($className, '\\');
     $fileName  = '' . BASEDIR . DIRECTORY_SEPARATOR;
     $namespace = '';
