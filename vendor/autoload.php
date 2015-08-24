@@ -14,8 +14,8 @@ spl_autoload_register( function($className){
     }
     //$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
     $fileName .= str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
-	//echo 'Fichero a buscar: ' . $fileName . ' para la clase: ' . $className;
-    //echo PHP_EOL . 'existe el fichero? ' . (is_file($fileName));
+	echo 'Fichero a buscar: ' . $fileName . ' para la clase: ' . $className;
+    echo PHP_EOL . 'existe el fichero? ' . (is_file($fileName));
     require_once ($fileName);
 });
 
