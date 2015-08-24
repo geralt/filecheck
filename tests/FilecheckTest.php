@@ -1,8 +1,8 @@
 <?php
 
-namespace FileCheck;
+//namespace FileCheck;
 
-use FileCheck;
+//use FileCheck;
 
 class FilecheckTest extends \PHPUnit_Framework_TestCase 
 {
@@ -10,7 +10,7 @@ class FilecheckTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->check = new FileCheck();
+        $this->check = new FileCheck\FileCheck();
     }
 
     /**
