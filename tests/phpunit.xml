@@ -4,7 +4,9 @@
 		bootstrap="../vendor/autoload.php"
 		stopOnError="true"
 		convertErrorsToExceptions="false"
-		verbose="true">
+		verbose="true"
+		colors="true"
+		debug="true">
 
 	<testsuites>
 		<testsuite name="FileCheckTests">
