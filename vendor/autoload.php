@@ -12,8 +12,8 @@ function autoload($className)
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 	echo 'Fichero a buscar: ' . $fileName;
-
     require_once ($fileName);
 }
 spl_autoload_register('autoload');
 echo 'Exiting ' __FILE__;
+
