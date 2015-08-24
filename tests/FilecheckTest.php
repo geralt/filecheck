@@ -10,7 +10,8 @@ class FilecheckTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->check = new \FileCheck\FileCheck();
+        echo 'Begining test....';
+		$this->check = new \FileCheck\FileCheck();
     }
 
     /**
@@ -21,9 +22,6 @@ class FilecheckTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetDebug()
     {
-        $data = array(
-            array('id' => 1234)
-        );
 
         $this->check->setDebug(true);
         $result = $this->check->getDebug();
