@@ -4,8 +4,8 @@
  */
 namespace FileCheck;
 
-class FileCheck
-{
+class FileCheck {
+    
     private $folder = null;
     private $logFolder;
     private $lastReportFile;
