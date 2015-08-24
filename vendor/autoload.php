@@ -3,7 +3,8 @@
 define ('BASEDIR', __DIR__);
 
 spl_autoload_register( function($className){
-    if ($className !== 'FileCheck\FileCheck') {return;}
+    echo $className . PHP_EOL;
+    if ($className !== 'FileCheck_FileCheck') {return;}
     $className = ltrim($className, '\\');
     $fileName  = '' . BASEDIR . DIRECTORY_SEPARATOR;
     $namespace = '';
@@ -12,8 +13,8 @@ spl_autoload_register( function($className){
         $className = substr($className, $lastNsPos + 1);
         $fileName  .= str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
     }
-    //$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-    $fileName .= str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
+    $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+    //$fileName .= str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
 	echo 'Fichero a buscar: ' . $fileName . ' para la clase: ' . $className;
     echo PHP_EOL . 'existe el fichero? ' . (is_file($fileName));
     require_once ($fileName);

@@ -6,7 +6,7 @@ class FilecheckTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-		$this->check = new \FileCheck\FileCheck( __DIR__,__DIR__,'');
+		$this->check = new \FileCheck_FileCheck( __DIR__,__DIR__,'');
     }
 
     /**
