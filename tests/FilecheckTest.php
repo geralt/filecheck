@@ -3,7 +3,8 @@
 //namespace FileCheck;
 
 //use FileCheck;
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../vendor/autoload.php';
+error_reporting(E_ALL);
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../vendor/autoload.phpa';
 
 class FilecheckTest extends \PHPUnit_Framework_TestCase 
 {
