@@ -6,4 +6,4 @@ before_script:
 php:
   - 5.4
   - 5.5
-script: phpunit --debug --verbose tests --bootstrap vendor/autoload.php
+script: phpunit --debug --verbose tests
