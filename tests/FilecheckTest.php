@@ -3,7 +3,7 @@
 //namespace FileCheck;
 
 //use FileCheck;
-include_once ( 'vendor/autoload.php');
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../vendor/autoload.php';
 
 class FilecheckTest extends \PHPUnit_Framework_TestCase 
 {
