@@ -5,4 +5,11 @@
 		stopOnError="true"
 		verbose="false">
 
+	<testsuites>
+		<testsuite name="FileCheckTests">
+			<directory>.</directory>
+        </testsuite>
+    </testsuites>
+
+		
 </phpunit>
