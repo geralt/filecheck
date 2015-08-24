@@ -10,7 +10,7 @@ class FilecheckTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->check = new FileCheck\FileCheck();
+        $this->check = new \FileCheck\FileCheck();
     }
 
     /**
